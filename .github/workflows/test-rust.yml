@@ -1,0 +1,61 @@
+name: Tests (Rust)
+
+on:
+  push:
+    paths:
+    - ".github/workflows/test-rust.yml"
+    - "rust/**"
+  pull_request:
+    paths:
+    - ".github/workflows/test-rust.yml"
+    - "rust/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+env:
+  FORCE_COLOR: "1"
+  RUST_BACKTRACE: "1"
+  CARGO_TERM_COLOR: "always"
+
+defaults:
+  run:
+    working-directory: rust/
+
+jobs:
+  cargo-test:
+    runs-on: ${{ matrix.os }}
+    name: Rust ${{ matrix.rust-version }} (${{ matrix.os }})
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+        - "ubuntu-latest"
+        - "windows-latest"
+        - "macos-latest"
+        rust-version:
+        - "stable"
+        - "beta"
+        - "nightly"
+        exclude:
+        - os: windows-latest
+          rust-version: "nightly"
+        - os: macos-latest
+          rust-version: "nightly"
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install Rust
+      uses: dtolnay/rust-toolchain@stable
+      with:
+        toolchain: ${{ matrix.rust-version }}
+    - name: Test
+      run: >
+        cargo test
+        --no-fail-fast
+        --future-incompat-report

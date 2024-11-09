@@ -1,0 +1,174 @@
+name: Tests (Python)
+
+on:
+  push:
+    paths:
+      - ".github/workflows/test-python.yml"
+      - "python/**"
+  pull_request:
+    paths:
+      - ".github/workflows/test-python.yml"
+      - "python/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+env:
+  FORCE_COLOR: "1"
+  PYTHONDEVMODE: "1"  # -X dev
+  PYTHONWARNDEFAULTENCODING: "1"  # -X warn_default_encoding
+  UV_SYSTEM_PYTHON: "1"  # make uv do global installs
+  
+defaults:
+  run:
+    working-directory: python/
+
+jobs:
+  ubuntu:
+    runs-on: ubuntu-latest
+    name: Python ${{ matrix.python }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python:
+        - "3.9"
+        - "3.10"
+        - "3.11"
+        - "3.12"
+        - "3.13"
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python }}
+    - name: Check Python version
+      run: python --version --version
+    - name: Install uv
+      run: >
+        curl --no-progress-meter --location --fail
+        --proto '=https' --tlsv1.2
+        "https://astral.sh/uv/install.sh"
+        | sh
+    - name: Install dependencies
+      run: uv pip install .[test]
+    - name: Test with pytest
+      run: python -m pytest -vv --durations 25
+      env:
+        PYTHONWARNINGS: "error"  # treat all warnings as errors
+
+  deadsnakes:
+    runs-on: ubuntu-latest
+    name: Python ${{ matrix.python }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python:
+        - "3.14"
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python }} (deadsnakes)
+      uses: deadsnakes/action@v3.2.0
+      with:
+        python-version: ${{ matrix.python }}-dev
+    - name: Check Python version
+      run: python --version --version
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install .[test]
+    - name: Test with pytest
+      run: python -m pytest -vv --durations 25
+      env:
+        PYTHONWARNINGS: "error"  # treat all warnings as errors
+
+  free-threaded:
+    runs-on: ubuntu-latest
+    name: Python ${{ matrix.python }} (free-threaded)
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python:
+        - "3.13"
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python }} (deadsnakes)
+      uses: deadsnakes/action@v3.2.0
+      with:
+        python-version: ${{ matrix.python }}
+        nogil: true
+    - name: Check Python version
+      run: python --version --version
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install .[test]
+    # markupsafe._speedups has not declared that it can run safely without the GIL
+    - name: Remove markupsafe._speedups
+      run: rm -rf "$(python -c 'from markupsafe._speedups import __file__ as f; print(f)')"
+    - name: Test with pytest
+      run: python -m pytest -vv --durations 25
+      env:
+        PYTHONWARNINGS: "error"  # treat all warnings as errors
+
+  deadsnakes-free-threaded:
+    runs-on: ubuntu-latest
+    name: Python ${{ matrix.python }} (free-threaded)
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python:
+        - "3.14"
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python }} (deadsnakes)
+      uses: deadsnakes/action@v3.2.0
+      with:
+        python-version: ${{ matrix.python }}-dev
+        nogil: true
+    - name: Check Python version
+      run: python --version --version
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install .[test]
+    - name: Test with pytest
+      run: python -m pytest -vv --durations 25
+      env:
+        PYTHONWARNINGS: "error"  # treat all warnings as errors
+
+  windows:
+    runs-on: windows-latest
+    name: Windows
+    timeout-minutes: 15
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3"
+    - name: Check Python version
+      run: python --version --version
+    - name: Install uv
+      run: >
+        Invoke-WebRequest -Uri "https://astral.sh/uv/install.ps1"
+        | Invoke-Expression
+    - name: Install dependencies
+      run: uv pip install .[test]
+    - name: Test with pytest
+      run: python -m pytest -vv --durations 25
+      env:
+        PYTHONWARNINGS: "error"  # treat all warnings as errors
