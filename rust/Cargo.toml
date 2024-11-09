@@ -1,0 +1,42 @@
+[package]
+name = "roman-numerals-rs"
+version = "1.0.0"
+authors = ["Adam Turner"]
+edition = "2021"
+rust-version = "1.65.0"  # MSRV
+description = "Manipulate well-formed Roman numerals"
+readme = "README.md"
+repository = "https://github.com/AA-Turner/roman-numerals/"
+license = "0BSD OR Public Domain"
+keywords = ["roman", "numerals", "roman-numerals"]
+categories = ["text-processing"]
+
+[dependencies]
+# no dependencies
+
+[profile.dev]
+panic = "unwind"
+lto = "off"
+
+[profile.release]
+panic = "abort"
+lto = "fat"
+codegen-units = 1
+
+[lints.clippy]
+cargo        = { priority = -1, level = "deny" }
+complexity   = { priority = -1, level = "deny" }
+correctness  = { priority = -1, level = "deny" }
+nursery      = { priority = -1, level = "deny" }
+pedantic     = { priority = -1, level = "deny" }
+perf         = { priority = -1, level = "deny" }
+style        = { priority = -1, level = "deny" }
+suspicious   = { priority = -1, level = "deny" }
+
+# We use reStructuredText for doc-comments
+doc_markdown = "allow"
+missing_errors_doc = "allow"
+
+# Ensure that integer literals use underscores to separate types
+separated_literal_suffix = "allow"
+unseparated_literal_suffix = "deny"

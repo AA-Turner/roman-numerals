@@ -1,0 +1,13 @@
+# Unix-style line endings
+[attr]unix text eol=lf
+
+*.md   unix
+*.py   unix
+*.rst  unix
+*.toml unix
+*.txt  unix
+
+# Language aware diff headers
+*.md   diff=markdown
+*.py   diff=python
+# *.rst  diff=reStructuredText
