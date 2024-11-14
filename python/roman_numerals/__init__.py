@@ -16,8 +16,8 @@ if TYPE_CHECKING:
 
     from typing_extensions import Self
 
-__version__: Final = '1.0.0'
-version_info: Final = (1, 0, 0)
+__version__: Final = '2.0.0'
+version_info: Final = (2, 0, 0)
 
 __all__: Final = (
     'MAX',
