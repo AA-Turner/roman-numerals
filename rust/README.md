@@ -76,6 +76,5 @@ assert!(matches!(res.unwrap_err(), OutOfRangeError));
 
 ## Licence
 
-This project is placed in the public domain
-or under the terms of the 'Zero Clause BSD licence',
-whichever is more permissive.
+This project is licenced under the terms of either the Zero-Clause BSD licence
+or the CC0 1.0 Universal licence.

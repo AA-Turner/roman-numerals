@@ -14,8 +14,9 @@
    :target: https://opensource.org/license/0BSD
    :alt: Licence: 0BSD
 
-.. image:: https://img.shields.io/badge/License-Public%20Domain-green.svg
-   :alt: Licence: Public Domain
+.. image:: https://img.shields.io/badge/Licence-CC0%201.0%20Universal-green.svg
+   :target: https://creativecommons.org/publicdomain/zero/1.0/
+   :alt: Licence: CC0 1.0 Universal
 
 This project provides utilities manipulating well-formed Roman numerals,
 in various programming languages.
@@ -56,8 +57,16 @@ Python
 Licence
 =======
 
-This project is placed in the public domain
-or under the terms of the `'Zero Clause BSD licence'`__,
-whichever is more permissive.
+This project is licenced under the terms of either the Zero-Clause BSD licence
+or the CC0 1.0 Universal licence.
+See `LICENCE.rst`__ for the full text of both licences.
 
 __ ./LICENCE.rst
+
+
+Contribution
+------------
+
+Unless explicitly stated otherwise, any contribution intentionally submitted
+for inclusion in this project shall be dual licensed as above,
+without any additional terms or conditions.
