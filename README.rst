@@ -2,6 +2,21 @@
  roman-numerals
 ===============
 
+.. image:: https://img.shields.io/pypi/v/roman-numerals-py.svg
+   :target: https://pypi.org/project/roman-numerals-py/
+   :alt: Package on PyPI
+
+.. image:: https://img.shields.io/crates/v/roman-numerals-rs
+   :target: https://crates.io/crates/roman-numerals-rs/
+   :alt: Package on Crates.io
+
+.. image:: https://img.shields.io/badge/Licence-0BSD-green.svg
+   :target: https://opensource.org/license/0BSD
+   :alt: Licence: 0BSD
+
+.. image:: https://img.shields.io/badge/License-Public%20Domain-green.svg
+   :alt: Licence: Public Domain
+
 This project provides utilities manipulating well-formed Roman numerals,
 in various programming languages.
 Currently, there are implementations in Python__ and Rust__.
