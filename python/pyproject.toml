@@ -21,7 +21,7 @@ requires-python = ">=3.9"
 
 # Classifiers list: https://pypi.org/classifiers/
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Environment :: Console",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: Zero-Clause BSD (0BSD)",
