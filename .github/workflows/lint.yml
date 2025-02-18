@@ -54,6 +54,7 @@ jobs:
         enable-cache: false
     - name: Install dependencies
       run: uv pip install ".[lint,test]"
+      working-directory: python/
     - name: Type check with mypy
       run: mypy python/
 
@@ -75,6 +76,7 @@ jobs:
         enable-cache: false
     - name: Install dependencies
       run: uv pip install ".[lint,test]"
+      working-directory: python/
     - name: Type check with pyright
       run: pyright python/
 
