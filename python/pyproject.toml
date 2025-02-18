@@ -10,7 +10,7 @@ build-backend = "flit_core.buildapi"
 # cf. https://packaging.python.org/en/latest/specifications/declaring-project-metadata/
 [project]
 name = "roman-numerals-py"
-description = "Docutils -- Python Documentation Utilities"
+description = "Manipulate well-formed Roman numerals"
 readme = "README.rst"
 urls.Changelog = "https://github.com/AA-Turner/roman-numerals/blob/master/CHANGES.rst"
 urls.Code = "https://github.com/AA-Turner/roman-numerals/"
