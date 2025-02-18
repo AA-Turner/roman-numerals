@@ -421,6 +421,7 @@ impl FromStr for RomanNumeral {
 }
 
 /// Numeral value, uppercase character, and lowercase character.
+#[cfg(feature = "std")]
 const ROMAN_NUMERAL_PREFIXES: &[(u16, &str, &str)] = &[
     (1000, "M", "m"),
     (900, "CM", "cm"),

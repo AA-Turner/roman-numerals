@@ -65,6 +65,7 @@ jobs:
     - name: Test (no-std)
       run: >
         cargo test
+        --lib
         --no-fail-fast
         --future-incompat-report
         --no-default-features
