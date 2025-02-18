@@ -404,7 +404,7 @@ impl FromStr for RomanNumeral {
         if chars.len() == idx {
             // SAFETY: idx is only incremented after adding to result,
             //         and chars is not empty, hence ``idx > 1``.
-            return Ok(Self(unsafe { NonZero::new_unchecked(result) }));
+            Ok(Self(unsafe { NonZero::new_unchecked(result) }))
         } else {
             Err(InvalidRomanNumeralError)
         }
