@@ -79,10 +79,14 @@
 //! This project is licenced under the terms of either
 //! the Zero-Clause BSD licence or the CC0 1.0 Universal licence.
 
+#![cfg_attr(not(feature = "std"), no_std)]
 #![warn(missing_docs)]
 #![warn(clippy::std_instead_of_core)]
 #![warn(clippy::print_stderr)]
 #![warn(clippy::print_stdout)]
+
+#[cfg(not(feature = "std"))]
+extern crate alloc;
 
 use core::fmt;
 use core::num::NonZero;
@@ -170,6 +174,7 @@ impl RomanNumeral {
     ///    assert_eq!("XLII", answer.to_uppercase());
     ///
     #[must_use]
+    #[cfg(feature = "std")]
     pub fn to_uppercase(self) -> String {
         let mut out = String::new();
         let mut n = self.0.get();
@@ -193,6 +198,7 @@ impl RomanNumeral {
     ///    assert_eq!("xlii", answer.to_lowercase());
     ///
     #[must_use]
+    #[cfg(feature = "std")]
     pub fn to_lowercase(self) -> String {
         let mut out = String::new();
         let mut n = self.0.get();
@@ -206,6 +212,7 @@ impl RomanNumeral {
     }
 }
 
+#[cfg(feature = "std")]
 impl fmt::Display for RomanNumeral {
     /// Converts a ``RomanNumeral`` to an uppercase string.
     ///
@@ -222,6 +229,7 @@ impl fmt::Display for RomanNumeral {
     }
 }
 
+#[cfg(feature = "std")]
 impl fmt::UpperHex for RomanNumeral {
     /// Converts a ``RomanNumeral`` to an uppercase string.
     ///
@@ -238,6 +246,7 @@ impl fmt::UpperHex for RomanNumeral {
     }
 }
 
+#[cfg(feature = "std")]
 impl fmt::LowerHex for RomanNumeral {
     /// Converts a ``RomanNumeral`` to a lowercase string.
     ///
@@ -585,6 +594,7 @@ mod test {
     }
 
     #[test]
+    #[cfg(feature = "std")]
     fn test_roman_numeral_to_string() {
         let test_numerals = [
             "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII",
@@ -610,6 +620,9 @@ mod test {
             let parsed: RomanNumeral = roman_str.parse().expect("parsing failed!");
             assert_eq!(parsed, expected);
         }
+
+        let parsed: RomanNumeral = "xvi".parse().unwrap();
+        assert_eq!(parsed, RomanNumeral::new(16).unwrap());
 
         let parsed: RomanNumeral = "MDLXXXIII".parse().unwrap();
         assert_eq!(parsed, RomanNumeral::new(1583).unwrap());
@@ -673,6 +686,7 @@ mod test {
     }
 
     #[test]
+    #[cfg(feature = "std")]
     fn test_roman_numeral_round_trip() {
         for i in 1..=3_999 {
             let r = RomanNumeral::new(i).unwrap().to_string();

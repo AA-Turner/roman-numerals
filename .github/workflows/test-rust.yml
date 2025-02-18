@@ -61,3 +61,10 @@ jobs:
         cargo test
         --no-fail-fast
         --future-incompat-report
+
+    - name: Test (no-std)
+      run: >
+        cargo test.
+        --no-fail-fast
+        --future-incompat-report
+        --no-default-features
