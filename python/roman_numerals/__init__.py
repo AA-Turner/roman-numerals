@@ -9,12 +9,19 @@ or the CC0 1.0 Universal licence.
 from __future__ import annotations
 
 import sys
-from typing import TYPE_CHECKING, final
 
+TYPE_CHECKING = False
 if TYPE_CHECKING:
-    from typing import Final
+    from typing import Final, TypeVar, final
 
     from typing_extensions import Self
+
+    _T = TypeVar('_T')
+else:
+
+    def final(f: _T) -> _T:
+        return f
+
 
 __version__: Final = '2.0.0'
 version_info: Final = (2, 0, 0)
