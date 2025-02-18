@@ -55,9 +55,32 @@ jobs:
         version: latest
         enable-cache: false
     - name: Install dependencies
-      run: uv pip install mypy pytest
+      run: uv pip install ".[lint,test]"
+      working-directory: python/
     - name: Type check with mypy
       run: mypy python/
+
+  pyright:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3"
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        version: latest
+        enable-cache: false
+    - name: Install dependencies
+      run: uv pip install ".[lint,test]"
+      working-directory: python/
+    - name: Type check with pyright
+      run: pyright python/
 
   twine:
     runs-on: ubuntu-latest

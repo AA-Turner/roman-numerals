@@ -49,6 +49,7 @@ test = [
 lint = [
     "mypy==1.15.0",
     "ruff==0.9.6",
+    "pyright==1.1.394",
 ]
 
 [tool.flit.module]
@@ -82,6 +83,13 @@ enable_error_code = [
     "unimported-reveal",
     "unused-awaitable",
     "unused-ignore",
+]
+
+[tool.pyright]
+typeCheckingMode = "strict"
+include = [
+    "roman_numerals",
+    "tests",
 ]
 
 [tool.pytest.ini_options]
