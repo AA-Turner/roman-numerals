@@ -2,6 +2,10 @@ target-version = "py39"  # Pin Ruff to Python 3.9
 line-length = 88
 output-format = "full"
 
+[format]
+preview = true
+quote-style = "single"
+
 [lint]
 preview = true
 select = ["ALL"]
@@ -37,12 +41,8 @@ forced-separate = [
     "tests",
 ]
 
-[lint.pydocstyle]
-convention = "pep257"
-
 [lint.pycodestyle]
 max-line-length = 95
 
-[format]
-preview = true
-quote-style = "single"
+[lint.pydocstyle]
+convention = "pep257"
