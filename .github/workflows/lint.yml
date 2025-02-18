@@ -33,10 +33,10 @@ jobs:
         args: --version
 
     - name: Lint with Ruff
-      run: ruff check --output-format=github
+      run: ruff check python/ --output-format=github
 
     - name: Format with Ruff
-      run: ruff format --diff
+      run: ruff format python/ --diff
 
   mypy:
     runs-on: ubuntu-latest
