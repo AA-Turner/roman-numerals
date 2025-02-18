@@ -85,6 +85,7 @@
 #![warn(clippy::print_stdout)]
 
 use core::fmt;
+use core::num::NonZero;
 use core::str::FromStr;
 
 /// The value of the smallest well-formed roman numeral.
@@ -117,11 +118,11 @@ impl fmt::Display for InvalidRomanNumeralError {
 /// A Roman numeral.
 ///
 /// Only values between 1 and 3,999 are valid.
-/// Stores the value internally as an ``u16``.
+/// Stores the value internally as a ``NonZero<u16>``.
 #[non_exhaustive]
 #[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub struct RomanNumeral {
-    value: u16,
+    value: NonZero<u16>,
 }
 
 impl RomanNumeral {
@@ -138,7 +139,10 @@ impl RomanNumeral {
     ///
     pub const fn new(value: u16) -> Result<Self, OutOfRangeError> {
         if 0 != value && value < 4_000 {
-            Ok(Self { value })
+            // SAFETY: 0 < value <= 3,999
+            Ok(Self {
+                value: unsafe { NonZero::new_unchecked(value) },
+            })
         } else {
             Err(OutOfRangeError)
         }
@@ -156,7 +160,7 @@ impl RomanNumeral {
     ///
     #[must_use]
     pub const fn as_u16(self) -> u16 {
-        self.value
+        self.value.get()
     }
 
     /// Converts a ``RomanNumeral`` to an uppercase string.
@@ -172,7 +176,7 @@ impl RomanNumeral {
     #[must_use]
     pub fn to_uppercase(self) -> String {
         let mut out = String::new();
-        let mut n = self.value;
+        let mut n = self.value.get();
         for &(value, name, _) in ROMAN_NUMERAL_PREFIXES {
             while n >= value {
                 n -= value;
@@ -195,7 +199,7 @@ impl RomanNumeral {
     #[must_use]
     pub fn to_lowercase(self) -> String {
         let mut out = String::new();
-        let mut n = self.value;
+        let mut n = self.value.get();
         for &(value, _, name) in ROMAN_NUMERAL_PREFIXES {
             while n >= value {
                 n -= value;
@@ -309,7 +313,11 @@ impl FromStr for RomanNumeral {
             }
         }
         if chars.len() == idx {
-            return Ok(Self { value: result });
+            // SAFETY: idx is only incremented after adding to result,
+            //         and chars is not empty, hence ``idx > 1``.
+            return Ok(Self {
+                value: unsafe { NonZero::new_unchecked(result) },
+            });
         }
 
         // Hundreds: 900 ("CM"), 400 ("CD"), 0-300 (0 to 3 "C" characters),
@@ -338,7 +346,11 @@ impl FromStr for RomanNumeral {
             }
         }
         if chars.len() == idx {
-            return Ok(Self { value: result });
+            // SAFETY: idx is only incremented after adding to result,
+            //         and chars is not empty, hence ``idx > 1``.
+            return Ok(Self {
+                value: unsafe { NonZero::new_unchecked(result) },
+            });
         }
 
         // Tens: 90 ("XC"), 40 ("XL"), 0-30 (0 to 3 "X" characters),
@@ -367,7 +379,11 @@ impl FromStr for RomanNumeral {
             }
         }
         if chars.len() == idx {
-            return Ok(Self { value: result });
+            // SAFETY: idx is only incremented after adding to result,
+            //         and chars is not empty, hence ``idx > 1``.
+            return Ok(Self {
+                value: unsafe { NonZero::new_unchecked(result) },
+            });
         }
 
         // Ones: 9 ("IX"), 4 ("IV"), 0-3 (0 to 3 "I" characters),
@@ -396,7 +412,11 @@ impl FromStr for RomanNumeral {
             }
         }
         if chars.len() == idx {
-            Ok(Self { value: result })
+            // SAFETY: idx is only incremented after adding to result,
+            //         and chars is not empty, hence ``idx > 1``.
+            Ok(Self {
+                value: unsafe { NonZero::new_unchecked(result) },
+            })
         } else {
             Err(InvalidRomanNumeralError)
         }
@@ -547,31 +567,43 @@ mod test {
 
     #[test]
     fn test_roman_numeral_new() {
-        assert!(matches!(RomanNumeral::new(0), Err(OutOfRangeError)));
-        assert!(matches!(
+        assert_eq!(RomanNumeral::new(0), Err(OutOfRangeError));
+        assert_eq!(
             RomanNumeral::new(1),
-            Ok(RomanNumeral { value: 1 })
-        ));
-        assert!(matches!(
+            Ok(RomanNumeral {
+                value: NonZero::new(1_u16).unwrap()
+            })
+        );
+        assert_eq!(
             RomanNumeral::new(1_u8.into()),
-            Ok(RomanNumeral { value: 1 })
-        ));
-        assert!(matches!(
+            Ok(RomanNumeral {
+                value: NonZero::new(1_u16).unwrap()
+            })
+        );
+        assert_eq!(
             RomanNumeral::new(1_u16),
-            Ok(RomanNumeral { value: 1 })
-        ));
-        assert!(matches!(
+            Ok(RomanNumeral {
+                value: NonZero::new(1_u16).unwrap()
+            })
+        );
+        assert_eq!(
             RomanNumeral::new(42),
-            Ok(RomanNumeral { value: 42 })
-        ));
-        assert!(matches!(
+            Ok(RomanNumeral {
+                value: NonZero::new(42_u16).unwrap()
+            })
+        );
+        assert_eq!(
             RomanNumeral::new(3_999),
-            Ok(RomanNumeral { value: 3_999 })
-        ));
-        assert!(matches!(
+            Ok(RomanNumeral {
+                value: NonZero::new(3_999_u16).unwrap()
+            })
+        );
+        assert_eq!(
             RomanNumeral::new(MAX),
-            Ok(RomanNumeral { value: 3_999 })
-        ));
+            Ok(RomanNumeral {
+                value: NonZero::new(3_999_u16).unwrap()
+            })
+        );
         assert!(matches!(RomanNumeral::new(4_000), Err(OutOfRangeError)));
         assert!(matches!(RomanNumeral::new(u16::MAX), Err(OutOfRangeError)));
     }
@@ -618,50 +650,72 @@ mod test {
 
     #[test]
     fn test_try_from_one() {
-        assert!(matches!(
+        assert_eq!(
             RomanNumeral::try_from(1_u8),
-            Ok(RomanNumeral { value: 1 })
-        ));
-        assert!(matches!(
+            Ok(RomanNumeral {
+                value: NonZero::new(1_u16).unwrap()
+            })
+        );
+        assert_eq!(
             RomanNumeral::try_from(1_u16),
-            Ok(RomanNumeral { value: 1 })
-        ));
-        assert!(matches!(
+            Ok(RomanNumeral {
+                value: NonZero::new(1_u16).unwrap()
+            })
+        );
+        assert_eq!(
             RomanNumeral::try_from(1_u32),
-            Ok(RomanNumeral { value: 1 })
-        ));
-        assert!(matches!(
+            Ok(RomanNumeral {
+                value: NonZero::new(1_u16).unwrap()
+            })
+        );
+        assert_eq!(
             RomanNumeral::try_from(1_u64),
-            Ok(RomanNumeral { value: 1 })
-        ));
-        assert!(matches!(
+            Ok(RomanNumeral {
+                value: NonZero::new(1_u16).unwrap()
+            })
+        );
+        assert_eq!(
             RomanNumeral::try_from(1_u128),
-            Ok(RomanNumeral { value: 1 })
-        ));
-        assert!(matches!(
+            Ok(RomanNumeral {
+                value: NonZero::new(1_u16).unwrap()
+            })
+        );
+        assert_eq!(
             RomanNumeral::try_from(1_usize),
-            Ok(RomanNumeral { value: 1 })
-        ));
-        assert!(matches!(
+            Ok(RomanNumeral {
+                value: NonZero::new(1_u16).unwrap()
+            })
+        );
+        assert_eq!(
             RomanNumeral::try_from(1_i8),
-            Ok(RomanNumeral { value: 1 })
-        ));
-        assert!(matches!(
+            Ok(RomanNumeral {
+                value: NonZero::new(1_u16).unwrap()
+            })
+        );
+        assert_eq!(
             RomanNumeral::try_from(1_i16),
-            Ok(RomanNumeral { value: 1 })
-        ));
-        assert!(matches!(
+            Ok(RomanNumeral {
+                value: NonZero::new(1_u16).unwrap()
+            })
+        );
+        assert_eq!(
             RomanNumeral::try_from(1_i32),
-            Ok(RomanNumeral { value: 1 })
-        ));
-        assert!(matches!(
+            Ok(RomanNumeral {
+                value: NonZero::new(1_u16).unwrap()
+            })
+        );
+        assert_eq!(
             RomanNumeral::try_from(1_i64),
-            Ok(RomanNumeral { value: 1 })
-        ));
-        assert!(matches!(
+            Ok(RomanNumeral {
+                value: NonZero::new(1_u16).unwrap()
+            })
+        );
+        assert_eq!(
             RomanNumeral::try_from(1_i128),
-            Ok(RomanNumeral { value: 1 })
-        ));
+            Ok(RomanNumeral {
+                value: NonZero::new(1_u16).unwrap()
+            })
+        );
     }
 
     #[test]
@@ -669,7 +723,7 @@ mod test {
         for i in 1..=3_999 {
             let r = RomanNumeral::new(i).unwrap().to_string();
             let parsed: RomanNumeral = r.parse().unwrap();
-            let val = parsed.value;
+            let val = parsed.value.get();
             assert_eq!(val, i);
         }
     }
