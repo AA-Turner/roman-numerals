@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from roman_numerals import (
     MAX,
     MIN,
