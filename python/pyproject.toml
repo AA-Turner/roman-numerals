@@ -43,11 +43,11 @@ name = "Adam Turner"
 
 [project.optional-dependencies]
 test = [
-    "pytest",
+    "pytest>=8",
 ]
 lint = [
-    "mypy",
-    "ruff",
+    "mypy==1.15.0",
+    "ruff==0.9.6",
 ]
 
 [tool.flit.module]
