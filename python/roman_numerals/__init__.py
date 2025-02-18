@@ -26,8 +26,6 @@ else:
 __version__: Final = '2.0.0'
 version_info: Final = (2, 0, 0)
 
-version_info = 'spam'
-
 __all__: Final = (
     'MAX',
     'MIN',
