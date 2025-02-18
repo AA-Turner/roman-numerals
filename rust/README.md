@@ -74,6 +74,10 @@ let res = RomanNumeral::new(4_000);
 assert!(matches!(res.unwrap_err(), OutOfRangeError));
 ```
 
+## Benchmarks
+
+Run the benchmarks with ``cargo bench``.
+
 ## Licence
 
 This project is licenced under the terms of either the Zero-Clause BSD licence
