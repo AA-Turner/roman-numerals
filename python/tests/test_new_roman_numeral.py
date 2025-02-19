@@ -29,7 +29,7 @@ def test_forty_two() -> None:
     assert int(RomanNumeral(42)) == 42  # NoQA: PLR2004
 
 
-def test_four_thousand_nine_hundred_and_ninety_nine() -> None:
+def test_three_thousand_nine_hundred_and_ninety_nine() -> None:
     assert int(RomanNumeral(3_999)) == 3_999  # NoQA: PLR2004
 
 
@@ -37,7 +37,7 @@ def test_MAX() -> None:  # NoQA: N802
     assert int(RomanNumeral(MAX)) == MAX
 
 
-def test_five_thousand() -> None:
+def test_four_thousand() -> None:
     with pytest.raises(OutOfRangeError) as ctx:
         RomanNumeral(4_000)
     msg = str(ctx.value)
