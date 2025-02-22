@@ -1,3 +1,9 @@
+Release 3.1.0 (released 22 Feb 2025)
+====================================
+
+* Support flit-core 3.11.
+* Increase the minimum supported Rust version (MSRV) to 1.79.0.
+
 Release 3.0.0 (released 18 Feb 2025)
 ====================================
 
