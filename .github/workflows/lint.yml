@@ -40,6 +40,9 @@ jobs:
 
   mypy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: python/
 
     steps:
     - uses: actions/checkout@v4
@@ -58,12 +61,14 @@ jobs:
       run: cp ../LICENCE.rst LICENCE.rst
     - name: Install dependencies
       run: uv pip install ".[lint,test]"
-      working-directory: python/
     - name: Type check with mypy
       run: mypy python/
 
   pyright:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: python/
 
     steps:
     - uses: actions/checkout@v4
@@ -82,7 +87,6 @@ jobs:
       run: cp ../LICENCE.rst LICENCE.rst
     - name: Install dependencies
       run: uv pip install ".[lint,test]"
-      working-directory: python/
     - name: Type check with pyright
       run: pyright python/
 
