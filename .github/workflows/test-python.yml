@@ -86,11 +86,6 @@ jobs:
         python-version: ${{ matrix.python }}-dev
     - name: Check Python version
       run: python --version --version
-    - name: Install uv
-      uses: astral-sh/setup-uv@v5
-      with:
-        version: latest
-        enable-cache: false
     - name: Copy licence file
       run: cp ../LICENCE.rst LICENCE.rst
     - name: Install dependencies
@@ -121,11 +116,6 @@ jobs:
         nogil: true
     - name: Check Python version
       run: python --version --version
-    - name: Install uv
-      uses: astral-sh/setup-uv@v5
-      with:
-        version: latest
-        enable-cache: false
     - name: Copy licence file
       run: cp ../LICENCE.rst LICENCE.rst
     - name: Install dependencies
@@ -156,11 +146,6 @@ jobs:
         nogil: true
     - name: Check Python version
       run: python --version --version
-    - name: Install uv
-      uses: astral-sh/setup-uv@v5
-      with:
-        version: latest
-        enable-cache: false
     - name: Copy licence file
       run: cp ../LICENCE.rst LICENCE.rst
     - name: Install dependencies
