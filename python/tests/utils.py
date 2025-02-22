@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-_TEST_NUMERALS_UPPER = [
+TEST_NUMERALS_UPPER = [
     'I',
     'II',
     'III',
@@ -26,7 +26,7 @@ _TEST_NUMERALS_UPPER = [
     'XXIII',
     'XXIV',
 ]
-_TEST_NUMERALS_LOWER = [
+TEST_NUMERALS_LOWER = [
     'i',
     'ii',
     'iii',

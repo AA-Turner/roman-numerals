@@ -92,9 +92,6 @@ include = [
     "tests",
 ]
 
-reportPrivateUsage = "none"
-reportUnnecessaryIsInstance = "none"
-
 [tool.pytest.ini_options]
 minversion = "6.0"
 addopts = [

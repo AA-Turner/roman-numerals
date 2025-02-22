@@ -71,7 +71,7 @@ class RomanNumeral:
     _value: int
 
     def __init__(self, value: int, /) -> None:
-        if not isinstance(value, int):
+        if not isinstance(value, int):  # pyright: ignore[reportUnnecessaryIsInstance]
             value_qualname = type(value).__qualname__
             msg = f'RomanNumeral: an integer is required, not {value_qualname!r}'
             raise TypeError(msg)
@@ -153,7 +153,7 @@ class RomanNumeral:
         >>> assert int(answer) == 42
         """
         # Not an empty string.
-        if not string or not isinstance(string, str):
+        if not string or not isinstance(string, str):  # pyright: ignore[reportUnnecessaryIsInstance]
             raise InvalidRomanNumeralError(string)
 
         # ASCII-only uppercase string.
