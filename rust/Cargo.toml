@@ -3,7 +3,7 @@ name = "roman-numerals-rs"
 version = "3.0.0"
 authors = ["Adam Turner"]
 edition = "2021"
-rust-version = "1.65.0"  # MSRV
+rust-version = "1.79.0"  # MSRV
 description = "Manipulate well-formed Roman numerals"
 readme = "README.md"
 repository = "https://github.com/AA-Turner/roman-numerals/"
@@ -13,9 +13,6 @@ categories = ["no-std", "text-processing"]
 
 [dependencies]
 # no dependencies
-
-[dev-dependencies]
-divan = "0.1.16"
 
 [features]
 default = ["std"]
@@ -29,10 +26,6 @@ lto = "off"
 panic = "abort"
 lto = "fat"
 codegen-units = 1
-
-[[bench]]
-name = "benchmark"
-harness = false
 
 [lints.clippy]
 cargo        = { priority = -1, level = "deny" }
