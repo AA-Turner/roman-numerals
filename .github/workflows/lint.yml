@@ -62,7 +62,7 @@ jobs:
     - name: Install dependencies
       run: uv pip install ".[lint,test]"
     - name: Type check with mypy
-      run: mypy python/
+      run: mypy .
 
   pyright:
     runs-on: ubuntu-latest
@@ -88,7 +88,7 @@ jobs:
     - name: Install dependencies
       run: uv pip install ".[lint,test]"
     - name: Type check with pyright
-      run: pyright python/
+      run: pyright .
 
   twine:
     runs-on: ubuntu-latest
