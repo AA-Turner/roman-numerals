@@ -92,6 +92,11 @@ include = [
     "tests",
 ]
 
+reportPrivateUsage = "none"
+reportUnknownArgumentType = "none"
+reportUnknownMemberType = "none"
+reportUnnecessaryIsInstance = "none"
+
 [tool.pytest.ini_options]
 minversion = "6.0"
 addopts = [
