@@ -177,9 +177,10 @@ jobs:
     - name: Check Python version
       run: python --version --version
     - name: Install uv
-      run: >
-        Invoke-WebRequest -Uri "https://astral.sh/uv/install.ps1"
-        | Invoke-Expression
+      uses: astral-sh/setup-uv@v5
+      with:
+        version: latest
+        enable-cache: false
     - name: Copy licence file
       run: cp ../LICENCE.rst LICENCE.rst
     - name: Install dependencies
