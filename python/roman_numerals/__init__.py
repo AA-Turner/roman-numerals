@@ -121,7 +121,7 @@ class RomanNumeral:
         >>> answer = RomanNumeral(42)
         >>> assert answer.to_uppercase() == 'XLII'
         """
-        out = []
+        out: list[str] = []
         n = self._value
         for value, name, _ in _ROMAN_NUMERAL_PREFIXES:
             while n >= value:
@@ -135,7 +135,7 @@ class RomanNumeral:
         >>> answer = RomanNumeral(42)
         >>> assert answer.to_lowercase() == 'xlii'
         """
-        out = []
+        out: list[str] = []
         n = self._value
         for value, _, name in _ROMAN_NUMERAL_PREFIXES:
             while n >= value:
