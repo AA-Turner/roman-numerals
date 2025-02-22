@@ -42,6 +42,7 @@ jobs:
         - "stable"
         - "beta"
         - "nightly"
+        - "1.65.0"  # MSRV
         exclude:
         - os: windows-latest
           rust-version: "nightly"
