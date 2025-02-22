@@ -40,6 +40,9 @@ jobs:
 
   mypy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: python/
 
     steps:
     - uses: actions/checkout@v4
@@ -56,15 +59,16 @@ jobs:
         enable-cache: false
     - name: Copy licence file
       run: cp ../LICENCE.rst LICENCE.rst
-      working-directory: python/
     - name: Install dependencies
       run: uv pip install ".[lint,test]"
-      working-directory: python/
     - name: Type check with mypy
-      run: mypy python/
+      run: mypy .
 
   pyright:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: python/
 
     steps:
     - uses: actions/checkout@v4
@@ -81,12 +85,10 @@ jobs:
         enable-cache: false
     - name: Copy licence file
       run: cp ../LICENCE.rst LICENCE.rst
-      working-directory: python/
     - name: Install dependencies
       run: uv pip install ".[lint,test]"
-      working-directory: python/
     - name: Type check with pyright
-      run: pyright python/
+      run: pyright .
 
   twine:
     runs-on: ubuntu-latest
