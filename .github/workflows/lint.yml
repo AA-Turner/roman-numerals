@@ -54,6 +54,8 @@ jobs:
       with:
         version: latest
         enable-cache: false
+    - name: Copy licence file
+      run: cp ../LICENCE.rst LICENCE.rst
     - name: Install dependencies
       run: uv pip install ".[lint,test]"
       working-directory: python/
@@ -76,6 +78,8 @@ jobs:
       with:
         version: latest
         enable-cache: false
+    - name: Copy licence file
+      run: cp ../LICENCE.rst LICENCE.rst
     - name: Install dependencies
       run: uv pip install ".[lint,test]"
       working-directory: python/
