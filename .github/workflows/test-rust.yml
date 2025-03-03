@@ -9,6 +9,8 @@ on:
     paths:
     - ".github/workflows/test-rust.yml"
     - "rust/**"
+  schedule:
+    - cron: " 12,42 * * * *"
 
 permissions:
   contents: read
