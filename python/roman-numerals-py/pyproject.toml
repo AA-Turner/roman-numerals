@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "roman-numerals-py"
+description = "This package is deprecated, switch to roman-numerals."
+readme.text = """
+This package is deprecated, switch to `roman-numerals`__.
+
+__ https://pypi.org/project/roman-numerals/
+"""
+readme.content-type = "text/x-rst"
+version = "3.1.0"
+dependencies = [
+    "roman-numerals==3.1.0",
+]
+urls.Code = "https://github.com/AA-Turner/roman-numerals/"
+urls.Download = "https://pypi.org/project/roman-numerals-py/"
+license.text = "0BSD or CC0-1.0"
+requires-python = ">=3.9"
+
+[[project.authors]]
+name = "Adam Turner"
