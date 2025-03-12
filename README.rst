@@ -2,8 +2,8 @@
  roman-numerals
 ===============
 
-.. image:: https://img.shields.io/pypi/v/roman-numerals-py.svg
-   :target: https://pypi.org/project/roman-numerals-py/
+.. image:: https://img.shields.io/pypi/v/roman-numerals.svg
+   :target: https://pypi.org/project/roman-numerals/
    :alt: Package on PyPI
 
 .. image:: https://img.shields.io/crates/v/roman-numerals-rs

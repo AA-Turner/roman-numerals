@@ -1,4 +1,4 @@
-# Project configuration file for the "roman-numerals-py" package (see PEP 518)
+# Project configuration file for the "roman-numerals" package (see PEP 518)
 
 # Use flit as a build backend (https://flit.pypa.io/)
 # Build with (https://build.pypa.io/)
@@ -9,12 +9,12 @@ build-backend = "flit_core.buildapi"
 # Project metadata
 # cf. https://packaging.python.org/en/latest/specifications/declaring-project-metadata/
 [project]
-name = "roman-numerals-py"
+name = "roman-numerals"
 description = "Manipulate well-formed Roman numerals"
 readme = "README.rst"
 urls.Changelog = "https://github.com/AA-Turner/roman-numerals/blob/master/CHANGES.rst"
 urls.Code = "https://github.com/AA-Turner/roman-numerals/"
-urls.Download = "https://pypi.org/project/roman-numerals-py/"
+urls.Download = "https://pypi.org/project/roman-numerals/"
 urls."Issue tracker" = "https://github.com/AA-Turner/roman-numerals/issues"
 license.file = "LICENCE.rst"
 requires-python = ">=3.9"
