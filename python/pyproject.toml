@@ -3,7 +3,7 @@
 # Use flit as a build backend (https://flit.pypa.io/)
 # Build with (https://build.pypa.io/)
 [build-system]
-requires = ["flit_core>=3.7,<4"]
+requires = ["flit_core>=3.12,<4"]
 build-backend = "flit_core.buildapi"
 
 # Project metadata
@@ -16,7 +16,7 @@ urls.Changelog = "https://github.com/AA-Turner/roman-numerals/blob/master/CHANGE
 urls.Code = "https://github.com/AA-Turner/roman-numerals/"
 urls.Download = "https://pypi.org/project/roman-numerals/"
 urls."Issue tracker" = "https://github.com/AA-Turner/roman-numerals/issues"
-license.file = "LICENCE.rst"
+license = "0BSD OR CC0-1.0"
 requires-python = ">=3.9"
 
 # Classifiers list: https://pypi.org/classifiers/
@@ -24,8 +24,6 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: Console",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: Zero-Clause BSD (0BSD)",
-    "License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
