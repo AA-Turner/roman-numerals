@@ -47,9 +47,9 @@ test = [
     "pytest>=8",
 ]
 lint = [
-    "mypy==1.15.0",
-    "ruff==0.9.10",
-    "pyright==1.1.396",
+    "mypy==1.17.0",
+    "ruff==0.12.2",
+    "pyright==1.1.403",
 ]
 
 [tool.flit.module]
