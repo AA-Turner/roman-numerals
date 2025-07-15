@@ -110,7 +110,7 @@ jobs:
               headers: {Authorization: `bearer ${oidc_request_token}`},
             });
             const oidc_token = (await oidc_resp.json()).value;
-  
+
             // exchange the OIDC token for an API token
             const mint_resp = await fetch('https://pypi.org/_/oidc/github/mint-token', {
               method: 'post',

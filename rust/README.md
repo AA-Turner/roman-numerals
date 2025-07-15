@@ -11,7 +11,7 @@ meaning that 'MMMCMXCIX' (3,999) is the largest well-formed Roman numeral.
 The smallest is 'I' (1), as there is no symbol for zero in Roman numerals.
 
 Both upper- and lower-case formatting of roman numerals are supported,
-and likewise for parsing strings, 
+and likewise for parsing strings,
 although the entire string must be of the same case.
 Numerals that do not adhere to the classical form are rejected
 with an ``InvalidRomanNumeralError``.

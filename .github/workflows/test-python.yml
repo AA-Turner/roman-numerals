@@ -22,7 +22,7 @@ env:
   PYTHONDEVMODE: "1"  # -X dev
   PYTHONWARNDEFAULTENCODING: "1"  # -X warn_default_encoding
   UV_SYSTEM_PYTHON: "1"  # make uv do global installs
-  
+
 defaults:
   run:
     working-directory: python/
