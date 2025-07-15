@@ -378,9 +378,9 @@ impl FromStr for RomanNumeral {
         }
 
         // ASCII-only uppercase string.
-        let chars = if s.chars().all(|c: char| char::is_ascii_uppercase(&c)) {
+        let chars = if s.chars().all(|c| c.is_ascii_uppercase()) {
             s.as_bytes()
-        } else if s.chars().all(|c: char| char::is_ascii_lowercase(&c)) {
+        } else if s.chars().all(|c| c.is_ascii_lowercase()) {
             &s.as_bytes().to_ascii_uppercase()
         } else {
             // Either Non-ASCII or mixed-case ASCII.
