@@ -47,7 +47,7 @@ test = [
 lint = [
     "mypy==1.17.0",
     "ruff==0.12.7",
-    "pyright==1.1.403",
+    "pyright==1.1.405",
 ]
 
 [tool.flit.module]
