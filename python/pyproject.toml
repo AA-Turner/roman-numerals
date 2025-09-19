@@ -45,7 +45,7 @@ test = [
     "pytest>=8",
 ]
 lint = [
-    "mypy==1.17.0",
+    "mypy==1.18.2",
     "ruff==0.12.7",
     "pyright==1.1.403",
 ]
