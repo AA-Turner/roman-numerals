@@ -30,7 +30,7 @@
 //! assert_eq!(num.as_u16(), 16);
 //!
 //! let num: RomanNumeral = 3_999.try_into().unwrap();
-//! println!("{}", num);  // MMMCMXCIX
+//! println!("{num}");  // MMMCMXCIX
 //! ```
 //!
 //! ### Convert a roman numeral to a string
@@ -42,8 +42,8 @@
 //! assert_eq!(num.to_string(), "XVI");
 //! assert_eq!(num.to_uppercase(), "XVI");
 //! assert_eq!(num.to_lowercase(), "xvi");
-//! assert_eq!(format!("{:X}", num), "XVI");
-//! assert_eq!(format!("{:x}", num), "xvi");
+//! assert_eq!(format!("{num:X}"), "XVI");
+//! assert_eq!(format!("{num:x}"), "xvi");
 //! ```
 //!
 //! ### Extract the decimal value of a roman numeral
@@ -181,15 +181,7 @@ impl RomanNumeral {
     #[must_use]
     #[cfg(feature = "std")]
     pub fn to_uppercase(self) -> String {
-        let mut out = String::new();
-        let mut n = self.0.get();
-        for &(value, name, _) in ROMAN_NUMERAL_PREFIXES {
-            while n >= value {
-                n -= value;
-                out.push_str(name);
-            }
-        }
-        out
+        format!("{self:X}")
     }
 
     /// Converts a ``RomanNumeral`` to a lowercase string.
@@ -205,19 +197,28 @@ impl RomanNumeral {
     #[must_use]
     #[cfg(feature = "std")]
     pub fn to_lowercase(self) -> String {
-        let mut out = String::new();
+        format!("{self:x}")
+    }
+
+    fn fmt_str(self, f: &mut fmt::Formatter, uppercase: bool) -> fmt::Result {
+        let mut buf = [0_u8; 15]; // longest numeral is MMMDCCCLXXXVIII.
         let mut n = self.0.get();
-        for &(value, _, name) in ROMAN_NUMERAL_PREFIXES {
+        let mut idx = 0;
+        for &(value, part_upper, part_lower) in ROMAN_NUMERAL_PREFIXES {
             while n >= value {
                 n -= value;
-                out.push_str(name);
+                let part = if uppercase { part_upper } else { part_lower };
+                buf[idx..idx + part.len()].copy_from_slice(part);
+                idx += part.len();
             }
         }
-        out
+        // SAFETY: ``buf`` only consists of valid ASCII characters.
+        //         ``idx`` is the length of the string.
+        let out = unsafe { core::str::from_utf8_unchecked(&buf[..idx]) };
+        f.write_str(out)
     }
 }
 
-#[cfg(feature = "std")]
 impl fmt::Display for RomanNumeral {
     /// Converts a ``RomanNumeral`` to an uppercase string.
     ///
@@ -230,11 +231,10 @@ impl fmt::Display for RomanNumeral {
     ///    assert_eq!("XLII", answer.to_string());
     ///
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str(&self.to_uppercase())
+        self.fmt_str(f, true)
     }
 }
 
-#[cfg(feature = "std")]
 impl fmt::UpperHex for RomanNumeral {
     /// Converts a ``RomanNumeral`` to an uppercase string.
     ///
@@ -244,14 +244,13 @@ impl fmt::UpperHex for RomanNumeral {
     /// .. code-block:: rust
     ///
     ///    let answer: RomanNumeral = RomanNumeral::new(42)?;
-    ///    println!("{:X}", answer);  // XLII
+    ///    println!("{answer:X}");  // XLII
     ///
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str(&self.to_uppercase())
+        self.fmt_str(f, true)
     }
 }
 
-#[cfg(feature = "std")]
 impl fmt::LowerHex for RomanNumeral {
     /// Converts a ``RomanNumeral`` to a lowercase string.
     ///
@@ -261,10 +260,10 @@ impl fmt::LowerHex for RomanNumeral {
     /// .. code-block:: rust
     ///
     ///    let answer: RomanNumeral = RomanNumeral::new(42)?;
-    ///    println!("{:x}", answer);  // xlii
+    ///    println!("{answer:x}");  // xlii
     ///
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str(&self.to_lowercase())
+        self.fmt_str(f, false)
     }
 }
 
@@ -426,21 +425,20 @@ impl FromStr for RomanNumeral {
 }
 
 /// Numeral value, uppercase character, and lowercase character.
-#[cfg(feature = "std")]
-const ROMAN_NUMERAL_PREFIXES: &[(u16, &str, &str)] = &[
-    (1000, "M", "m"),
-    (900, "CM", "cm"),
-    (500, "D", "d"),
-    (400, "CD", "cd"),
-    (100, "C", "c"),
-    (90, "XC", "xc"),
-    (50, "L", "l"),
-    (40, "XL", "xl"),
-    (10, "X", "x"),
-    (9, "IX", "ix"),
-    (5, "V", "v"),
-    (4, "IV", "iv"),
-    (1, "I", "i"),
+const ROMAN_NUMERAL_PREFIXES: &[(u16, &[u8], &[u8])] = &[
+    (1000, b"M", b"m"),
+    (900, b"CM", b"cm"),
+    (500, b"D", b"d"),
+    (400, b"CD", b"cd"),
+    (100, b"C", b"c"),
+    (90, b"XC", b"xc"),
+    (50, b"L", b"l"),
+    (40, b"XL", b"xl"),
+    (10, b"X", b"x"),
+    (9, b"IX", b"ix"),
+    (5, b"V", b"v"),
+    (4, b"IV", b"iv"),
+    (1, b"I", b"i"),
 ];
 
 impl TryFrom<u8> for RomanNumeral {
@@ -566,6 +564,9 @@ impl TryFrom<i128> for RomanNumeral {
 
 #[cfg(test)]
 mod test {
+    #[cfg(not(feature = "std"))]
+    use alloc::string::ToString;
+
     use super::*;
 
     #[test]
@@ -600,7 +601,6 @@ mod test {
     }
 
     #[test]
-    #[cfg(feature = "std")]
     fn test_roman_numeral_to_string() {
         let test_numerals = [
             "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII",
@@ -692,7 +692,6 @@ mod test {
     }
 
     #[test]
-    #[cfg(feature = "std")]
     fn test_roman_numeral_round_trip() {
         for i in 1..=3_999 {
             let r = RomanNumeral::new(i).unwrap().to_string();
