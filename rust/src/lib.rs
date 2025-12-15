@@ -564,6 +564,9 @@ impl TryFrom<i128> for RomanNumeral {
 
 #[cfg(test)]
 mod test {
+    #[cfg(not(feature = "std"))]
+    use alloc::string::ToString;
+
     use super::*;
 
     #[test]
@@ -598,7 +601,6 @@ mod test {
     }
 
     #[test]
-    #[cfg(feature = "std")]
     fn test_roman_numeral_to_string() {
         let test_numerals = [
             "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII",
@@ -690,7 +692,6 @@ mod test {
     }
 
     #[test]
-    #[cfg(feature = "std")]
     fn test_roman_numeral_round_trip() {
         for i in 1..=3_999 {
             let r = RomanNumeral::new(i).unwrap().to_string();
