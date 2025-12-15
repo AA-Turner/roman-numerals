@@ -1,0 +1,23 @@
+# https://docs.pytest.org/en/stable/reference/reference.html#configuration-options
+
+[pytest]
+minversion = "9.0"
+
+# https://docs.pytest.org/en/stable/reference/reference.html#command-line-flags
+addopts = [
+    "-ra",
+    "--import-mode=prepend",
+    "--pythonwarnings=error",
+]
+
+empty_parameter_set_mark = "xfail"
+
+filterwarnings = [
+    "all",
+]
+
+log_cli_level = "INFO"
+
+testpaths = ["tests"]
+
+strict = true
