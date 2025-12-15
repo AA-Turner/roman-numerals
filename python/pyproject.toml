@@ -40,14 +40,23 @@ dynamic = ["version"]
 [[project.authors]]
 name = "Adam Turner"
 
-[project.optional-dependencies]
-test = [
-    "pytest>=8",
-]
+[dependency-groups]
 lint = [
-    "mypy==1.19.1",
     "ruff==0.14.9",
+]
+package = [
+    "build",
+    "pypi-attestations==0.0.29",
+    "twine>=6.1",
+]
+test = [
+    "pytest>=9",
+]
+types = [
+    "mypy==1.19.1",
+    "pyrefly",
     "pyright==1.1.407",
+    "ty",
 ]
 
 [tool.flit.module]
