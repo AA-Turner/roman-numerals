@@ -8,6 +8,10 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    groups:
+      actions:
+        patterns:
+          - "*"
   - package-ecosystem: "pip"
     directory: "/python"
     schedule:
