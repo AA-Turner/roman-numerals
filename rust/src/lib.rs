@@ -88,6 +88,7 @@
 #[cfg(not(feature = "std"))]
 extern crate alloc;
 
+use core::error::Error;
 use core::fmt;
 use core::num::NonZero;
 use core::str::FromStr;
@@ -108,6 +109,8 @@ impl fmt::Display for OutOfRangeError {
     }
 }
 
+impl Error for OutOfRangeError {}
+
 /// Returned as an error if a parsed string is not a roman numeral.
 #[derive(Debug, Clone, Copy, Eq, PartialEq)]
 #[non_exhaustive]
@@ -118,6 +121,8 @@ impl fmt::Display for InvalidRomanNumeralError {
         write!(f, "Invalid Roman numeral.")
     }
 }
+
+impl Error for InvalidRomanNumeralError {}
 
 /// A Roman numeral.
 ///
