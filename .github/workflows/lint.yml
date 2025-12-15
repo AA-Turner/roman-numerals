@@ -57,12 +57,10 @@ jobs:
       with:
         version: latest
         enable-cache: false
-    - name: Copy licence file
-      run: cp ../LICENCE.rst LICENCE.rst
     - name: Install dependencies
-      run: uv pip install ".[lint,test]"
+      run: uv pip install --group package --group test --group types
     - name: Type check with mypy
-      run: mypy .
+      run: mypy
 
   pyright:
     runs-on: ubuntu-latest
@@ -83,12 +81,10 @@ jobs:
       with:
         version: latest
         enable-cache: false
-    - name: Copy licence file
-      run: cp ../LICENCE.rst LICENCE.rst
     - name: Install dependencies
-      run: uv pip install ".[lint,test]"
+      run: uv pip install --group package --group test --group types
     - name: Type check with pyright
-      run: pyright .
+      run: pyright
 
   twine:
     runs-on: ubuntu-latest
@@ -110,7 +106,7 @@ jobs:
         version: latest
         enable-cache: false
     - name: Install dependencies
-      run: uv pip install --upgrade twine build
+      run: uv pip install --group package
     - name: Lint with twine
       run: |
         cp ../LICENCE.rst LICENCE.rst

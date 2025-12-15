@@ -45,10 +45,7 @@ jobs:
           enable-cache: false
 
       - name: Install build dependencies (pypa/build, twine)
-        run: |
-          uv pip install build "twine>=5.1"
-          # resolution fails without betterproto
-          uv pip install pypi-attestations==0.0.21 betterproto==2.0.0b6
+        run: uv pip install --group package
 
       - name: Copy licence file
         run: cp ../LICENCE.rst LICENCE.rst
@@ -57,8 +54,7 @@ jobs:
         run: python -m build
 
       - name: Check distribution
-        run: |
-          twine check dist/*
+        run: twine check dist/*
 
       - name: Create Sigstore attestations for built distributions
         uses: actions/attest@v1
@@ -97,36 +93,7 @@ jobs:
           name: attestation-bundles
           path: /tmp/attestation-bundles/
 
-      - name: Mint PyPI API token
-        id: mint-token
-        uses: actions/github-script@v8
-        with:
-          # language=JavaScript
-          script: |
-            // retrieve the ambient OIDC token
-            const oidc_request_token = process.env.ACTIONS_ID_TOKEN_REQUEST_TOKEN;
-            const oidc_request_url = process.env.ACTIONS_ID_TOKEN_REQUEST_URL;
-            const oidc_resp = await fetch(`${oidc_request_url}&audience=pypi`, {
-              headers: {Authorization: `bearer ${oidc_request_token}`},
-            });
-            const oidc_token = (await oidc_resp.json()).value;
-
-            // exchange the OIDC token for an API token
-            const mint_resp = await fetch('https://pypi.org/_/oidc/github/mint-token', {
-              method: 'post',
-              body: `{"token": "${oidc_token}"}` ,
-              headers: {'Content-Type': 'application/json'},
-            });
-            const api_token = (await mint_resp.json()).token;
-
-            // mask the newly minted API token, so that we don't accidentally leak it
-            core.setSecret(api_token)
-            core.setOutput('api-token', api_token)
-
       - name: Upload to PyPI
         env:
           TWINE_NON_INTERACTIVE: "true"
-          TWINE_USERNAME: "__token__"
-          TWINE_PASSWORD: "${{ steps.mint-token.outputs.api-token }}"
-        run: |
-          twine upload dist/* --attestations --verbose
+        run: twine upload dist/* --attestations --verbose
