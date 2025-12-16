@@ -61,9 +61,9 @@ def test_float() -> None:
 def test_mutation() -> None:
     obj = RomanNumeral(MIN)
     with pytest.raises(AttributeError, match=r"Cannot set the '_value' attribute."):
-        obj._value = 0  # pyright: ignore[reportPrivateUsage]
+        obj._value = 0  # NoQA: SLF001 # pyright: ignore[reportPrivateUsage]
     with pytest.raises(AttributeError, match=r"Cannot delete the '_value' attribute."):
-        del obj._value  # pyright: ignore[reportPrivateUsage]
+        del obj._value  # NoQA: SLF001 # pyright: ignore[reportPrivateUsage]
 
 
 def test_non_existing_attribute() -> None:

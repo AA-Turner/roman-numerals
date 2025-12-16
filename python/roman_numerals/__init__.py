@@ -71,6 +71,7 @@ class RomanNumeral:
     _value: int
 
     def __new__(cls, value: int, /) -> Self:
+        """Construct a RomanNumeral from an integer."""
         if type(value) is not int:
             type_name = type(value).__qualname__
             msg = f'RomanNumeral() argument must be an integer, not {type_name!r}'
