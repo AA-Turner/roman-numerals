@@ -133,6 +133,12 @@ impl Error for InvalidRomanNumeralError {}
 pub struct RomanNumeral(NonZero<u16>);
 
 impl RomanNumeral {
+    /// The smallest well-formed Roman numeral: I (1).
+    pub const MIN: Self = Self(unsafe { NonZero::new_unchecked(MIN) });
+
+    /// The largest well-formed Roman numeral: MMMCMXCIX (3,999).
+    pub const MAX: Self = Self(unsafe { NonZero::new_unchecked(MAX) });
+
     /// Creates a ``RomanNumeral`` for any value that implements.
     /// Requires ``value`` to be greater than 0 and less than 4,000.
     ///
@@ -144,6 +150,7 @@ impl RomanNumeral {
     //     let answer: RomanNumeral = RomanNumeral::new(42).unwrap();
     //     assert_eq!("XLII", answer.to_uppercase());
     ///
+    #[inline]
     pub const fn new(value: u16) -> Result<Self, OutOfRangeError> {
         if 0 != value && value < 4_000 {
             // SAFETY: 0 < value <= 3,999
@@ -164,10 +171,89 @@ impl RomanNumeral {
     ///    assert_eq!(answer.as_u16(), 42_u16);
     ///
     #[must_use]
+    #[inline]
     pub const fn as_u16(self) -> u16 {
         self.0.get()
     }
+}
 
+impl From<RomanNumeral> for u16 {
+    /// Converts a RomanNumeral into a u16.
+    fn from(value: RomanNumeral) -> Self {
+        value.as_u16()
+    }
+}
+
+impl From<RomanNumeral> for u32 {
+    /// Converts a RomanNumeral into a u32.
+    fn from(value: RomanNumeral) -> Self {
+        Self::from(value.as_u16())
+    }
+}
+
+impl From<RomanNumeral> for u64 {
+    /// Converts a RomanNumeral into a u64.
+    fn from(value: RomanNumeral) -> Self {
+        Self::from(value.as_u16())
+    }
+}
+
+impl From<RomanNumeral> for u128 {
+    /// Converts a RomanNumeral into a u128.
+    fn from(value: RomanNumeral) -> Self {
+        Self::from(value.as_u16())
+    }
+}
+
+impl From<RomanNumeral> for usize {
+    /// Converts a RomanNumeral into a usize.
+    fn from(value: RomanNumeral) -> Self {
+        value.as_u16() as Self
+    }
+}
+
+impl From<RomanNumeral> for i16 {
+    /// Converts a RomanNumeral into an i16.
+    fn from(value: RomanNumeral) -> Self {
+        // i16::MAX is 32,767 (2^15 − 1)
+        // Largest Roman numeral is 3,999
+        Self::try_from(value.as_u16())
+            .unwrap_or_else(|_| unreachable!("RomanNumeral::MAX fits in 12 bits."))
+    }
+}
+
+impl From<RomanNumeral> for i32 {
+    /// Converts a RomanNumeral into an i32.
+    fn from(value: RomanNumeral) -> Self {
+        Self::from(value.as_u16())
+    }
+}
+
+impl From<RomanNumeral> for i64 {
+    /// Converts a RomanNumeral into an i64.
+    fn from(value: RomanNumeral) -> Self {
+        Self::from(value.as_u16())
+    }
+}
+
+impl From<RomanNumeral> for i128 {
+    /// Converts a RomanNumeral into an i128.
+    fn from(value: RomanNumeral) -> Self {
+        Self::from(value.as_u16())
+    }
+}
+
+impl From<RomanNumeral> for isize {
+    /// Converts a RomanNumeral into an isize.
+    fn from(value: RomanNumeral) -> Self {
+        // isize::MAX is 32,767 (2^15 − 1) for 16-bit targets
+        // Largest Roman numeral is 3,999
+        Self::try_from(value.as_u16())
+            .unwrap_or_else(|_| unreachable!("RomanNumeral::MAX fits in 12 bits."))
+    }
+}
+
+impl RomanNumeral {
     /// Converts a ``RomanNumeral`` to an uppercase string.
     ///
     /// Example
@@ -598,6 +684,20 @@ mod test {
         );
         assert!(matches!(RomanNumeral::new(4_000), Err(OutOfRangeError)));
         assert!(matches!(RomanNumeral::new(u16::MAX), Err(OutOfRangeError)));
+    }
+
+    #[test]
+    fn test_from_one() {
+        assert_eq!(u16::from(RomanNumeral::MIN), 1);
+        assert_eq!(u32::from(RomanNumeral::MIN), 1);
+        assert_eq!(u64::from(RomanNumeral::MIN), 1);
+        assert_eq!(u128::from(RomanNumeral::MIN), 1);
+        assert_eq!(usize::from(RomanNumeral::MIN), 1);
+        assert_eq!(i16::from(RomanNumeral::MIN), 1);
+        assert_eq!(i32::from(RomanNumeral::MIN), 1);
+        assert_eq!(i64::from(RomanNumeral::MIN), 1);
+        assert_eq!(i128::from(RomanNumeral::MIN), 1);
+        assert_eq!(isize::from(RomanNumeral::MIN), 1);
     }
 
     #[test]
