@@ -98,6 +98,19 @@ jobs:
           TWINE_NON_INTERACTIVE: "true"
         run: twine upload dist/* --attestations --verbose
 
+      - name: Build distribution (roman-numerals-py meta-package)
+        run: |
+          cd roman-numerals-py/
+          python -m build
+
+      - name: Check distribution (roman-numerals-py meta-package)
+        run: twine check roman-numerals-py/dist/*
+
+      - name: Upload to PyPI (roman-numerals-py meta-package)
+        env:
+          TWINE_NON_INTERACTIVE: "true"
+        run: twine upload roman-numerals-py/dist/* --verbose
+
   publish-crates-io:
     runs-on: ubuntu-latest
     name: Crates.io Release

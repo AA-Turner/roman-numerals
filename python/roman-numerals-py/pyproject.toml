@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -17,7 +17,7 @@ dependencies = [
 ]
 urls.Code = "https://github.com/AA-Turner/roman-numerals/"
 urls.Download = "https://pypi.org/project/roman-numerals-py/"
-license.text = "0BSD or CC0-1.0"
+license = "0BSD or CC0-1.0"
 requires-python = ">=3.10"
 
 [[project.authors]]
