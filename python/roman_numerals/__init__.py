@@ -70,15 +70,17 @@ class RomanNumeral:
     __slots__ = ('_value',)
     _value: int
 
-    def __init__(self, value: int, /) -> None:
-        if not isinstance(value, int):  # pyright: ignore[reportUnnecessaryIsInstance]
-            value_qualname = type(value).__qualname__
-            msg = f'RomanNumeral: an integer is required, not {value_qualname!r}'
+    def __new__(cls, value: int, /) -> Self:
+        if type(value) is not int:
+            type_name = type(value).__qualname__
+            msg = f'RomanNumeral() argument must be an integer, not {type_name!r}'
             raise TypeError(msg)
         if value < MIN or value > MAX:
-            msg = f'Number out of range (must be between 1 and 3,999). Got {value}.'
+            msg = f'{value} is out of range (must be between 1 and 3,999).'
             raise OutOfRangeError(msg)
-        super().__setattr__('_value', value)
+        obj = object.__new__(cls)
+        object.__setattr__(obj, '_value', value)
+        return obj
 
     def __int__(self) -> int:
         """Return the integer value of this numeral."""
@@ -114,6 +116,13 @@ class RomanNumeral:
             msg = f'Cannot set the {key!r} attribute.'
             raise AttributeError(msg)
         super().__setattr__(key, value)
+
+    def __delattr__(self, key: str) -> None:
+        """Implement delattr(self, name)."""
+        if key == '_value':
+            msg = f'Cannot delete the {key!r} attribute.'
+            raise AttributeError(msg)
+        super().__delattr__(key)
 
     def to_uppercase(self) -> str:
         """Convert a ``RomanNumeral`` to an uppercase string.
