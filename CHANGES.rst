@@ -1,3 +1,18 @@
+Release 4.0.0 (released 16 Dec 2025)
+====================================
+
+* Rename Python package to ``roman-numerals`` on PyPI.
+* Publish ``roman-numerals-py`` as a meta-package that depends
+  on ``roman-numerals`` and installs no modules.
+* Drop support for Python 3.9.
+* Declare support for Python 3.15.
+* Increase the minimum supported Rust version (MSRV) to 1.81.0.
+* Implement the ``core::error::Error`` trait for all error types.
+* Implement the ``core::fmt`` traits in ``no-std`` mode.
+* Implement ``From<RomanNumeral>`` for most integer types.
+* Publish the ``roman-numerals-rs`` crate using `Trusted Publishing
+  <https://crates.io/docs/trusted-publishing>`__
+
 Release 3.1.0 (released 22 Feb 2025)
 ====================================
 

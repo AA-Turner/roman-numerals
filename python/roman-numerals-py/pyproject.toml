@@ -11,9 +11,9 @@ This package is deprecated, switch to `roman-numerals`__.
 __ https://pypi.org/project/roman-numerals/
 """
 readme.content-type = "text/x-rst"
-version = "3.1.0"
+version = "4.0.0"
 dependencies = [
-    "roman-numerals==3.1.0",
+    "roman-numerals==4.0.0",
 ]
 urls.Code = "https://github.com/AA-Turner/roman-numerals/"
 urls.Download = "https://pypi.org/project/roman-numerals-py/"
