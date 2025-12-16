@@ -657,31 +657,15 @@ mod test {
 
     #[test]
     fn test_roman_numeral_new() {
+        let rn_42: RomanNumeral = RomanNumeral(NonZero::new(42_u16).unwrap());
+
         assert_eq!(RomanNumeral::new(0), Err(OutOfRangeError));
-        assert_eq!(
-            RomanNumeral::new(1),
-            Ok(RomanNumeral(NonZero::new(1_u16).unwrap()))
-        );
-        assert_eq!(
-            RomanNumeral::new(1_u8.into()),
-            Ok(RomanNumeral(NonZero::new(1_u16).unwrap()))
-        );
-        assert_eq!(
-            RomanNumeral::new(1_u16),
-            Ok(RomanNumeral(NonZero::new(1_u16).unwrap()))
-        );
-        assert_eq!(
-            RomanNumeral::new(42),
-            Ok(RomanNumeral(NonZero::new(42_u16).unwrap()))
-        );
-        assert_eq!(
-            RomanNumeral::new(3_999),
-            Ok(RomanNumeral(NonZero::new(3_999_u16).unwrap()))
-        );
-        assert_eq!(
-            RomanNumeral::new(MAX),
-            Ok(RomanNumeral(NonZero::new(3_999_u16).unwrap()))
-        );
+        assert_eq!(RomanNumeral::new(1), Ok(RomanNumeral::MIN));
+        assert_eq!(RomanNumeral::new(1_u8.into()), Ok(RomanNumeral::MIN));
+        assert_eq!(RomanNumeral::new(1_u16), Ok(RomanNumeral::MIN));
+        assert_eq!(RomanNumeral::new(42), Ok(rn_42));
+        assert_eq!(RomanNumeral::new(3_999), Ok(RomanNumeral::MAX));
+        assert_eq!(RomanNumeral::new(MAX), Ok(RomanNumeral::MAX));
         assert!(matches!(RomanNumeral::new(4_000), Err(OutOfRangeError)));
         assert!(matches!(RomanNumeral::new(u16::MAX), Err(OutOfRangeError)));
     }
@@ -707,11 +691,12 @@ mod test {
             "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX", "XXI", "XXII", "XXIII", "XXIV",
         ];
         for (i, roman_str) in test_numerals.iter().enumerate() {
-            let n = u16::try_from(i + 1).unwrap();
-            let r = RomanNumeral::new(n).unwrap().to_string();
-            assert_eq!(&r, roman_str);
+            let n: u16 = (i + 1).try_into().unwrap();
+            let expected: RomanNumeral = RomanNumeral::new(n).unwrap();
+            assert_eq!(expected.to_string(), *roman_str);
         }
-        assert_eq!(RomanNumeral::new(1984).unwrap().to_string(), "MCMLXXXIV");
+        let rn_1984: RomanNumeral = RomanNumeral::new(1984).unwrap();
+        assert_eq!(rn_1984.to_string(), "MCMLXXXIV");
     }
 
     #[test]
@@ -721,74 +706,45 @@ mod test {
             "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX", "XXI", "XXII", "XXIII", "XXIV",
         ];
         for (i, roman_str) in test_numerals.iter().enumerate() {
-            let n = u16::try_from(i + 1).unwrap();
-            let expected = RomanNumeral::new(n).unwrap();
+            let n: u16 = (i + 1).try_into().unwrap();
+            let expected: RomanNumeral = RomanNumeral::new(n).unwrap();
             let parsed: RomanNumeral = roman_str.parse().expect("parsing failed!");
             assert_eq!(parsed, expected);
         }
 
+        let rn_16: RomanNumeral = RomanNumeral::new(16).unwrap();
         let parsed: RomanNumeral = "xvi".parse().unwrap();
-        assert_eq!(parsed, RomanNumeral::new(16).unwrap());
+        assert_eq!(parsed, rn_16);
 
+        let rn_1583: RomanNumeral = RomanNumeral::new(1583).unwrap();
         let parsed: RomanNumeral = "MDLXXXIII".parse().unwrap();
-        assert_eq!(parsed, RomanNumeral::new(1583).unwrap());
+        assert_eq!(parsed, rn_1583);
 
+        let rn_1984: RomanNumeral = RomanNumeral::new(1984).unwrap();
         let parsed: RomanNumeral = "MCMLXXXIV".parse().unwrap();
-        assert_eq!(parsed, RomanNumeral::new(1984).unwrap());
+        assert_eq!(parsed, rn_1984);
 
+        let rn_2000: RomanNumeral = RomanNumeral::new(2000).unwrap();
         let parsed: RomanNumeral = "MM".parse().unwrap();
-        assert_eq!(parsed, RomanNumeral::new(2000).unwrap());
+        assert_eq!(parsed, rn_2000);
 
         let parsed: RomanNumeral = "MMMCMXCIX".parse().unwrap();
-        assert_eq!(parsed, RomanNumeral::new(3_999).unwrap());
+        assert_eq!(parsed, RomanNumeral::MAX);
     }
 
     #[test]
     fn test_try_from_one() {
-        assert_eq!(
-            RomanNumeral::try_from(1_u8),
-            Ok(RomanNumeral(NonZero::new(1_u16).unwrap()))
-        );
-        assert_eq!(
-            RomanNumeral::try_from(1_u16),
-            Ok(RomanNumeral(NonZero::new(1_u16).unwrap()))
-        );
-        assert_eq!(
-            RomanNumeral::try_from(1_u32),
-            Ok(RomanNumeral(NonZero::new(1_u16).unwrap()))
-        );
-        assert_eq!(
-            RomanNumeral::try_from(1_u64),
-            Ok(RomanNumeral(NonZero::new(1_u16).unwrap()))
-        );
-        assert_eq!(
-            RomanNumeral::try_from(1_u128),
-            Ok(RomanNumeral(NonZero::new(1_u16).unwrap()))
-        );
-        assert_eq!(
-            RomanNumeral::try_from(1_usize),
-            Ok(RomanNumeral(NonZero::new(1_u16).unwrap()))
-        );
-        assert_eq!(
-            RomanNumeral::try_from(1_i8),
-            Ok(RomanNumeral(NonZero::new(1_u16).unwrap()))
-        );
-        assert_eq!(
-            RomanNumeral::try_from(1_i16),
-            Ok(RomanNumeral(NonZero::new(1_u16).unwrap()))
-        );
-        assert_eq!(
-            RomanNumeral::try_from(1_i32),
-            Ok(RomanNumeral(NonZero::new(1_u16).unwrap()))
-        );
-        assert_eq!(
-            RomanNumeral::try_from(1_i64),
-            Ok(RomanNumeral(NonZero::new(1_u16).unwrap()))
-        );
-        assert_eq!(
-            RomanNumeral::try_from(1_i128),
-            Ok(RomanNumeral(NonZero::new(1_u16).unwrap()))
-        );
+        assert_eq!(RomanNumeral::try_from(1_u8), Ok(RomanNumeral::MIN));
+        assert_eq!(RomanNumeral::try_from(1_u16), Ok(RomanNumeral::MIN));
+        assert_eq!(RomanNumeral::try_from(1_u32), Ok(RomanNumeral::MIN));
+        assert_eq!(RomanNumeral::try_from(1_u64), Ok(RomanNumeral::MIN));
+        assert_eq!(RomanNumeral::try_from(1_u128), Ok(RomanNumeral::MIN));
+        assert_eq!(RomanNumeral::try_from(1_usize), Ok(RomanNumeral::MIN));
+        assert_eq!(RomanNumeral::try_from(1_i8), Ok(RomanNumeral::MIN));
+        assert_eq!(RomanNumeral::try_from(1_i16), Ok(RomanNumeral::MIN));
+        assert_eq!(RomanNumeral::try_from(1_i32), Ok(RomanNumeral::MIN));
+        assert_eq!(RomanNumeral::try_from(1_i64), Ok(RomanNumeral::MIN));
+        assert_eq!(RomanNumeral::try_from(1_i128), Ok(RomanNumeral::MIN));
     }
 
     #[test]
@@ -796,7 +752,7 @@ mod test {
         for i in 1..=3_999 {
             let r = RomanNumeral::new(i).unwrap().to_string();
             let parsed: RomanNumeral = r.parse().unwrap();
-            let val = parsed.0.get();
+            let val: u16 = parsed.as_u16();
             assert_eq!(val, i);
         }
     }
