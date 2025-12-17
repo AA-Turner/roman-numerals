@@ -134,10 +134,18 @@ pub struct RomanNumeral(NonZero<u16>);
 
 impl RomanNumeral {
     /// The smallest well-formed Roman numeral: I (1).
-    pub const MIN: Self = Self(unsafe { NonZero::new_unchecked(MIN) });
+    pub const MIN: Self = Self(
+        // TODO: Use NonZero::new(MIN).unwrap() when MSRV >= 1.83.
+        // SAFETY: crate::MIN is a non-zero constant value.
+        unsafe { NonZero::new_unchecked(MIN) },
+    );
 
     /// The largest well-formed Roman numeral: MMMCMXCIX (3,999).
-    pub const MAX: Self = Self(unsafe { NonZero::new_unchecked(MAX) });
+    pub const MAX: Self = Self(
+        // TODO: Use NonZero::new(MAX).unwrap() when MSRV >= 1.83.
+        // SAFETY: crate::MAX is a non-zero constant value.
+        unsafe { NonZero::new_unchecked(MAX) },
+    );
 
     /// Creates a ``RomanNumeral`` for any value that implements.
     /// Requires ``value`` to be greater than 0 and less than 4,000.
@@ -298,8 +306,14 @@ impl RomanNumeral {
                 idx += part.len();
             }
         }
-        // SAFETY: ``buf`` only consists of valid ASCII characters.
-        //         ``idx`` is the length of the string.
+        // idx must be equal to the length of the string written to buf.
+        debug_assert_ne!(idx, 0);
+        debug_assert_eq!(
+            buf.iter().take_while(|el| el.is_ascii_alphabetic()).count(),
+            idx
+        );
+        // SAFETY: buf only consists of valid ASCII characters;
+        //         idx is the length of the string.
         let out = unsafe { core::str::from_utf8_unchecked(&buf[..idx]) };
         f.write_str(out)
     }
@@ -654,6 +668,12 @@ mod test {
     use alloc::string::ToString;
 
     use super::*;
+
+    #[test]
+    fn test_roman_numeral_associated_constants() {
+        assert_eq!(RomanNumeral::MIN.as_u16(), 1u16);
+        assert_eq!(RomanNumeral::MAX.as_u16(), 3_999u16);
+    }
 
     #[test]
     fn test_roman_numeral_new() {
