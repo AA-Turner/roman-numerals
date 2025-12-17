@@ -671,8 +671,8 @@ mod test {
 
     #[test]
     fn test_roman_numeral_associated_constants() {
-        assert_eq!(RomanNumeral::MIN.as_u16(), 1u16);
-        assert_eq!(RomanNumeral::MAX.as_u16(), 3_999u16);
+        assert_eq!(RomanNumeral::MIN.as_u16(), 1_u16);
+        assert_eq!(RomanNumeral::MAX.as_u16(), 3_999_u16);
     }
 
     #[test]
