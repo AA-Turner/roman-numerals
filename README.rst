@@ -37,7 +37,7 @@ Rust
 
    fn main() {
       let num = RomanNumeral::new(16);
-      println!("{}", num); // XVI
+      println!("{num}"); // XVI
       assert_eq!("XVI".parse().unwrap(), num);
    }
 
