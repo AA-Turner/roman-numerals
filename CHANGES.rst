@@ -1,3 +1,9 @@
+Release 4.1.0 (released 17 Dec 2025)
+====================================
+
+* Restore LICENCE.rst in the roman-numerals-py meta-package
+* Add some debug assertions for unsafe blocks
+
 Release 4.0.0 (released 16 Dec 2025)
 ====================================
 

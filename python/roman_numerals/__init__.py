@@ -21,8 +21,8 @@ else:
         return f
 
 
-__version__: Final = '4.0.0'
-version_info: Final = (4, 0, 0)
+__version__: Final = '4.1.0'
+version_info: Final = (4, 1, 0)
 
 __all__: Final = (
     'MAX',
