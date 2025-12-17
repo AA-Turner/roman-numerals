@@ -98,6 +98,11 @@ jobs:
           TWINE_NON_INTERACTIVE: "true"
         run: twine upload dist/* --attestations --verbose
 
+      - name: Copy licence file (roman-numerals-py meta-package)
+        run: |
+          cd roman-numerals-py/
+          cp ../../LICENCE.rst LICENCE.rst
+
       - name: Build distribution (roman-numerals-py meta-package)
         run: |
           cd roman-numerals-py/
