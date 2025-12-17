@@ -12,14 +12,12 @@ import sys
 
 TYPE_CHECKING = False
 if TYPE_CHECKING:
-    from typing import Final, TypeVar, final
+    from typing import Final, final
 
     from typing_extensions import Self
-
-    _T = TypeVar('_T')
 else:
 
-    def final(f: _T) -> _T:
+    def final(f):  # NoQA: ANN001, ANN202
         return f
 
 
@@ -79,7 +77,7 @@ class RomanNumeral:
         if value < MIN or value > MAX:
             msg = f'{value} is out of range (must be between 1 and 3,999).'
             raise OutOfRangeError(msg)
-        obj = object.__new__(cls)
+        obj: Self = object.__new__(cls)  # pyrefly: ignore[bad-assignment]
         object.__setattr__(obj, '_value', value)
         return obj
 
@@ -257,7 +255,7 @@ class RomanNumeral:
         raise InvalidRomanNumeralError(string)
 
 
-_ROMAN_NUMERAL_PREFIXES: Final = [
+_ROMAN_NUMERAL_PREFIXES: Final = (
     (1000, sys.intern('M'), sys.intern('m')),
     (900, sys.intern('CM'), sys.intern('cm')),
     (500, sys.intern('D'), sys.intern('d')),
@@ -271,5 +269,5 @@ _ROMAN_NUMERAL_PREFIXES: Final = [
     (5, sys.intern('V'), sys.intern('v')),
     (4, sys.intern('IV'), sys.intern('iv')),
     (1, sys.intern('I'), sys.intern('i')),
-]
+)
 """Numeral value, uppercase character, and lowercase character."""

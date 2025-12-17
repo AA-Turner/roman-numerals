@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 TEST_NUMERALS_UPPER = [
     'I',
     'II',

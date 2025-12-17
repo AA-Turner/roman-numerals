@@ -44,9 +44,6 @@ strict = true
 forced-separate = [
     "tests",
 ]
-required-imports = [
-    "from __future__ import annotations",
-]
 
 [lint.pycodestyle]
 max-line-length = 95
