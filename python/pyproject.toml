@@ -42,7 +42,7 @@ name = "Adam Turner"
 
 [dependency-groups]
 lint = [
-    "ruff==0.14.10",
+    "ruff==0.14.11",
 ]
 package = [
     "build",
