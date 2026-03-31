@@ -53,7 +53,7 @@ test = [
     "pytest>=9",
 ]
 types = [
-    "mypy==1.19.1",
+    "mypy==1.20.0",
     "pyrefly",
     "pyright==1.1.407",
     "ty",
