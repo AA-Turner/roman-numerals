@@ -7,20 +7,20 @@ from roman_numerals import (
 from tests.utils import TEST_NUMERALS_LOWER, TEST_NUMERALS_UPPER
 
 
-@pytest.mark.parametrize(('n', 'roman_str'), enumerate(TEST_NUMERALS_UPPER, start=1))
+@pytest.mark.parametrize(('n', 'roman_str'), list(enumerate(TEST_NUMERALS_UPPER, start=1)))
 def test_str(n: int, roman_str: str) -> None:
     num = RomanNumeral(n)
     assert str(num) == roman_str
     assert f'{num}' == roman_str
 
 
-@pytest.mark.parametrize(('n', 'roman_str'), enumerate(TEST_NUMERALS_UPPER, start=1))
+@pytest.mark.parametrize(('n', 'roman_str'), list(enumerate(TEST_NUMERALS_UPPER, start=1)))
 def test_uppercase(n: int, roman_str: str) -> None:
     num = RomanNumeral(n)
     assert num.to_uppercase() == roman_str
 
 
-@pytest.mark.parametrize(('n', 'roman_str'), enumerate(TEST_NUMERALS_LOWER, start=1))
+@pytest.mark.parametrize(('n', 'roman_str'), list(enumerate(TEST_NUMERALS_LOWER, start=1)))
 def test_lowercase(n: int, roman_str: str) -> None:
     num = RomanNumeral(n)
     assert num.to_lowercase() == roman_str
