@@ -8,14 +8,14 @@ from roman_numerals import (
 from tests.utils import TEST_NUMERALS_LOWER, TEST_NUMERALS_UPPER
 
 
-@pytest.mark.parametrize(('n', 'roman_str'), enumerate(TEST_NUMERALS_UPPER, start=1))
+@pytest.mark.parametrize(('n', 'roman_str'), list(enumerate(TEST_NUMERALS_UPPER, start=1)))
 def test_uppercase(n: int, roman_str: str) -> None:
     expected = RomanNumeral(n)
     parsed = RomanNumeral.from_string(roman_str)
     assert expected == parsed
 
 
-@pytest.mark.parametrize(('n', 'roman_str'), enumerate(TEST_NUMERALS_LOWER, start=1))
+@pytest.mark.parametrize(('n', 'roman_str'), list(enumerate(TEST_NUMERALS_LOWER, start=1)))
 def test_lowercase(n: int, roman_str: str) -> None:
     expected = RomanNumeral(n)
     parsed = RomanNumeral.from_string(roman_str)
